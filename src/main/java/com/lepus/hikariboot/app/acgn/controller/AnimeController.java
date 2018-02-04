@@ -36,9 +36,9 @@ public class AnimeController extends BaseController{
 	@RequestMapping("/anime/conditions")
 	public Object conditions(HttpServletRequest req, HttpServletResponse resp){
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("seasons", Checker.create(Season.values()));
-		map.put("serials", Checker.create(SerialState.values()));
-		map.put("watches", Checker.create(WatchState.values()));
+		map.put("seasons", Checker.create(Season.values(), "0"));
+		map.put("serials", Checker.create(SerialState.values(), "0"));
+		map.put("watches", Checker.create(WatchState.values(), "0"));
 		return map;
 	}
 	

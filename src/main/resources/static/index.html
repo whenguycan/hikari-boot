@@ -2,11 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+<meta http-equiv="pragma" content="no-cache"> 
 <title>Don`t Insert title here</title>
 <link rel="stylesheet" href="plugins/bootstrap-3.3.7-dist/css/bootstrap.min.css">
 <!-- <script type="text/javascript" src="plugins/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
 <script type="text/javascript" src="plugins/angular/angular.js"></script>
-<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="index/index.js"></script>
+<script type="text/javascript" src="index/index.css"></script>
 </head>
 <body ng-app="app" ng-controller="appController">
 
@@ -31,13 +34,19 @@
 				</div>
 				<div class="col-xs-3">
 					<ul>
-						<li ng-repeat="x in seasons">{{x.code}}-{{x.text}}</li>
+						<li ng-repeat="x in seasons">
+							<a href="#" ng-click="seasonsClick(x.code)" >{{x.text}}</a>
+						</li>
 					</ul>
 					<ul>
-						<li ng-repeat="x in serials">{{x.code}}-{{x.text}}</li>
+						<li ng-repeat="x in serials">
+							<a href="#" >{{x.code}}-{{x.text}}</a>
+						</li>
 					</ul>
 					<ul>
-						<li ng-repeat="x in watches">{{x.code}}-{{x.text}}</li>
+						<li ng-repeat="x in watches">
+							<a href="#" >{{x.code}}-{{x.text}}</a>
+						</li>
 					</ul>
 				</div>
 			</div>

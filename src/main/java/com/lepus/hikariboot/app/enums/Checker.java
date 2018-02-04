@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.lepus.hikariboot.utils.EnumsUtils.MyEnum;
+import com.lepus.hikariboot.utils.StringUtils;
 
 /**
  * 
@@ -15,14 +16,31 @@ public class Checker {
 	private String code;
 	private String text;
 	
-	public static List<Checker> create(MyEnum[] mes){
+	public static List<Checker> create(MyEnum[] mes, String... excludes){
 		List<Checker> list = new ArrayList<Checker>();
 		if(mes != null){
 			for(MyEnum me : mes){
-				list.add(new Checker(me.code(), me.text()));
+				if(!isExclude(me.code(), excludes)){
+					list.add(new Checker(me.code(), me.text()));
+				}
 			}
 		}
 		return list;
+	}
+	
+	private static boolean isExclude(String code, String... excludes){
+		if(StringUtils.isBlank(code))
+			return true;
+		if(excludes == null || excludes.length == 0)
+			return true;
+		boolean find = false;
+		for(String exclude : excludes){
+			if(code.equals(exclude)){
+				find = true;
+				break;
+			}
+		}
+		return find;
 	}
 	
 	public Checker(String code, String text){
