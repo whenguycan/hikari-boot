@@ -9,7 +9,7 @@
 <!-- <script type="text/javascript" src="plugins/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
 <script type="text/javascript" src="plugins/angular/angular.js"></script>
 <script type="text/javascript" src="index/index.js"></script>
-<script type="text/javascript" src="index/index.css"></script>
+<link rel="stylesheet" href="index/index.css">
 </head>
 <body ng-app="app" ng-controller="appController">
 
@@ -29,23 +29,35 @@
 						</div>
 					</div>
 					<div class="row">
-						<div style="display: inline-block;" ng-repeat="x in pagination">{{x}}</div>
+						<div style="display: inline-block;">
+							<a href="#" ng-click="go(head)">首页</a>
+						</div>
+						<div style="display: inline-block;" ng-repeat="x in pagination">
+							<a href="#" ng-click="go(x)" ng-if="x != pageNo">{{x}}</a>
+							<span ng-if="x == pageNo">{{x}}</span>
+						</div>
+						<div style="display: inline-block;">
+							<a href="#" ng-click="go(tail)">尾页</a>
+						</div>
 					</div>
 				</div>
 				<div class="col-xs-3">
 					<ul>
 						<li ng-repeat="x in seasons">
-							<a href="#" ng-click="seasonsClick(x.code)" >{{x.text}}</a>
+							<a href="#" ng-click="seasonsClick(x.code)" ng-if="x.code != params.season">{{x.text}}</a>
+							<span ng-if="x.code == params.season">{{x.text}}</span>
 						</li>
 					</ul>
 					<ul>
 						<li ng-repeat="x in serials">
-							<a href="#" >{{x.code}}-{{x.text}}</a>
+							<a href="#" ng-click="serialsClick(x.code)" ng-if="x.code != params.serials">{{x.text}}</a>
+							<span ng-if="x.code == params.serials">{{x.text}}</span>
 						</li>
 					</ul>
 					<ul>
 						<li ng-repeat="x in watches">
-							<a href="#" >{{x.code}}-{{x.text}}</a>
+							<a href="#" ng-click="watchesClick(x.code)" ng-if="x.code != params.watches">{{x.text}}</a>
+							<span ng-if="x.code == params.watches">{{x.text}}</span>
 						</li>
 					</ul>
 				</div>
