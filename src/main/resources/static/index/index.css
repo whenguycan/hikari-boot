@@ -62,3 +62,7 @@
 .container .edit-form .edit-form-line{
 	text-align: center;
 }
+
+.container .edit-form select {
+	width: 174px;
+}

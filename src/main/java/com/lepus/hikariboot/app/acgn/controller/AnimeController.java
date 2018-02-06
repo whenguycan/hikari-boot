@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.Gson;
 import com.lepus.hikariboot.app.acgn.bean.Anime;
 import com.lepus.hikariboot.app.acgn.service.AnimeService;
 import com.lepus.hikariboot.app.enums.Checker;
@@ -56,14 +57,15 @@ public class AnimeController extends BaseController{
 	}
 	
 	@RequestMapping("/anime/detail/{id}")
-	public Object preEdit(HttpServletRequest req, HttpServletResponse resp, String id){
-		Anime anime = animeService.fetch(id, true);
+	public Object preEdit(HttpServletRequest req, HttpServletResponse resp, @PathVariable()String id){
+		Anime anime = animeService.fetch(id, false);
 		return anime;
 	}
 	
 	@RequestMapping("/anime/edit")
 	public Object edit(HttpServletRequest req, HttpServletResponse resp, Anime anime){
 		System.out.println(anime.getId());
+		System.out.println(new Gson().toJson(anime));
 		return getSuccessResponse(null, true);
 	}
 	

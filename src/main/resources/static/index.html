@@ -70,7 +70,7 @@
 			</div>
 			<div class="edit-form-line">
 				<label>Season : </label>
-				<input type="text" ng-model="entity.season" />
+				<select ng-model="seasonSelected" ng-options="x.text for x in seasons"></select>
 			</div>
 			<div class="edit-form-line">
 				<label>Curr : </label>
@@ -86,7 +86,7 @@
 			</div>
 			<div class="edit-form-line">
 				<label>SerialState : </label>
-				<input type="text" ng-model="entity.serialState" />
+				<select ng-model="serialSelected" ng-options="x.text for x in serials"></select>
 			</div>
 			<div class="edit-form-line">
 				<button ng-click="editDo()">保存</button>

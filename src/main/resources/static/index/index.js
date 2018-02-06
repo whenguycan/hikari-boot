@@ -29,21 +29,10 @@ app.controller('appController', function($scope, $http) {
 	}
 	$http.post('anime/conditions', {}).then(function(resp) {
 		var data = resp.data;
-		var all = {};
-		all.code = '';
-		all.text = '全部';
 		$scope.seasons = data.seasons;
-		$scope.addFirst($scope.seasons, all);
 		$scope.serials = data.serials;
-		$scope.addFirst($scope.serials, all);
 		$scope.watches = data.watches;
-		$scope.addFirst($scope.watches, all);
 	});
-	$scope.addFirst = function(arr, o) {
-		var reverse = arr.reverse();
-		arr.push(o);
-		return reverse.reverse();
-	}
 	$scope.params = new Array();
 	$scope.params['season'] = '';
 	$scope.params['sa_eq_i_serialState'] = '';
@@ -92,6 +81,8 @@ app.controller('appController', function($scope, $http) {
 		}
 		return data;
 	}
+	$scope.seasonSelected = '';
+	$scope.serialSelected = '';
 	$scope.shadowShow = false;
 	$scope.editShow = false;
 	$scope.entity = new Array();
@@ -99,14 +90,31 @@ app.controller('appController', function($scope, $http) {
 		$scope.entity['id'] = id;
 		var url = '/anime/detail/' + id;
 		$http.post(url, {}).then(function(resp){
-			console.log(resp.data);
-			
+			var data = resp.data;
+			for(var i in data){
+				$scope.entity[i] = data[i];
+			}
+			$scope.seasons.forEach(function(i){
+				if(i.code == data['season']){
+					$scope.seasonSelected = i;
+				}
+			});
+			$scope.serials.forEach(function(i){
+				if(i.code == data['serialState']){
+					$scope.serialSelected = i;
+				}
+			});
 			$scope.shadowShow = true;
 			$scope.editShow = true;
 		});
 	}
 	$scope.editDo = function(){
-		//clear form
+		$scope.entity['season'] = $scope.seasonSelected == null ? '' : $scope.seasonSelected['code'];
+		$scope.entity['serialState'] = $scope.serialSelected == null ? '' : $scope.serialSelected['code'];
+		var url = 'anime/edit';
+		$http.post(url, {}).then(function(resp){
+			console.log(resp.data);
+		});
 		$scope.shadowShow = false;
 		$scope.editShow = false;
 	}
