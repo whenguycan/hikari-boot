@@ -46,11 +46,25 @@ public class AnimeController extends BaseController{
 	public Object all(HttpServletRequest req, HttpServletResponse resp, 
 						@PathVariable(required = false)Integer pageNo,
 						@RequestParam(required = false)Integer pageSize){
-		System.out.println(pageSize);
 		Map<String, String> params = getInterceptoredParams(req);
+		for(String key : params.keySet()){
+			System.out.println(key + "=" + params.get(key));
+		}
 		params.put("s_order_desc_updateTime", "desc");
 		Page<Anime> page = new Page<Anime>(pageNo, pageSize);
 		return animeService.findPage(params, page);
+	}
+	
+	@RequestMapping("/anime/detail/{id}")
+	public Object preEdit(HttpServletRequest req, HttpServletResponse resp, String id){
+		Anime anime = animeService.fetch(id, true);
+		return anime;
+	}
+	
+	@RequestMapping("/anime/edit")
+	public Object edit(HttpServletRequest req, HttpServletResponse resp, Anime anime){
+		System.out.println(anime.getId());
+		return getSuccessResponse(null, true);
 	}
 	
 }

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.lepus.hikariboot.framework.date.String2DateArgumentResolver;
@@ -31,6 +32,12 @@ public class HikariBootConfigurer extends WebMvcConfigurerAdapter{
 	public void addReturnValueHandlers(List<HandlerMethodReturnValueHandler> returnValueHandlers){
 		returnValueHandlers.add(new JacksonJsonReturnHandler());
 		super.addReturnValueHandlers(returnValueHandlers);
+	}
+	
+	public void addResourceHandlers(ResourceHandlerRegistry registry){
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/upload/**").addResourceLocations("file:C:/Users/Administrator/Desktop/");
+		super.addResourceHandlers(registry);
 	}
 	
 }

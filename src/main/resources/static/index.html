@@ -2,14 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
-<meta http-equiv="pragma" content="no-cache"> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="pragma" content="no-cache">
 <title>Don`t Insert title here</title>
-<link rel="stylesheet" href="plugins/bootstrap-3.3.7-dist/css/bootstrap.min.css">
-<!-- <script type="text/javascript" src="plugins/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
-<script type="text/javascript" src="plugins/angular/angular.js"></script>
-<script type="text/javascript" src="index/index.js"></script>
-<link rel="stylesheet" href="index/index.css">
+<link rel="stylesheet" href="/static/plugins/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+<!-- <script type="text/javascript" src="/static/plugins/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script> -->
+<script type="text/javascript" src="/static/plugins/angular/angular.js"></script>
+<script type="text/javascript" src="/static/index/index.js"></script>
+<link rel="stylesheet" href="/static/index/index.css">
 </head>
 <body ng-app="app" ng-controller="appController">
 
@@ -19,13 +19,19 @@
 		</div>
 		<div class="col-xs-12">
 			<div class="row">
-				Searcher & Title
+				<input type="text" ng-model="searchText" ng-keyup="pressEnter($event)" />
+				<button ng-click="search()">GO!</button>
+				<button ng-click="reset0()">RESET!</button>
 			</div>
 			<div class="row">
 				<div class="col-xs-9">
-					<div class="row">
-						<div class="col-xs-3" ng-repeat="x in animes">
-							{{x.name}}
+					<div class="row pic-screen">
+						<div class="col-xs-2 pic-panel" ng-repeat="x in animes" style="border: 1px solid;">
+							<div class="row pic-panel-img">
+								<img alt="img" src="/upload/04.jpg" ng-click="edit(x.id)">
+							</div>
+							<div class="row pic-panel-num">{{x.curr}} / {{x.total}}</div>
+							<div class="row pic-panel-name">{{x.name}}</div>
 						</div>
 					</div>
 					<div class="row">
@@ -43,26 +49,50 @@
 				</div>
 				<div class="col-xs-3">
 					<ul>
-						<li ng-repeat="x in seasons">
-							<a href="#" ng-click="seasonsClick(x.code)" ng-if="x.code != params.season">{{x.text}}</a>
-							<span ng-if="x.code == params.season">{{x.text}}</span>
-						</li>
-					</ul>
-					<ul>
 						<li ng-repeat="x in serials">
-							<a href="#" ng-click="serialsClick(x.code)" ng-if="x.code != params.serials">{{x.text}}</a>
-							<span ng-if="x.code == params.serials">{{x.text}}</span>
+							<a href="#" ng-click="serialsClick(x.code)" ng-if="x.code != params.sa_eq_i_serialState">{{x.text}}</a>
+							<span ng-if="x.code == params.sa_eq_i_serialState">{{x.text}}</span>
 						</li>
 					</ul>
 					<ul>
 						<li ng-repeat="x in watches">
-							<a href="#" ng-click="watchesClick(x.code)" ng-if="x.code != params.watches">{{x.text}}</a>
-							<span ng-if="x.code == params.watches">{{x.text}}</span>
+							<a href="#" ng-click="watchesClick(x.code)" ng-if="x.code != params.sa_eq_i_watchState">{{x.text}}</a>
+							<span ng-if="x.code == params.sa_eq_i_watchState">{{x.text}}</span>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
+		<div class="edit-form" ng-show="editShow">
+			<div class="edit-form-line">
+				<label>Name : </label>
+				<input type="text" ng-model="entity.name" />
+			</div>
+			<div class="edit-form-line">
+				<label>Season : </label>
+				<input type="text" ng-model="entity.season" />
+			</div>
+			<div class="edit-form-line">
+				<label>Curr : </label>
+				<input type="text" ng-model="entity.curr" />
+			</div>
+			<div class="edit-form-line">
+				<label>Total : </label>
+				<input type="text" ng-model="entity.total" />
+			</div>
+			<div class="edit-form-line">
+				<label>Link : </label>
+				<input type="text" ng-model="entity.link" />
+			</div>
+			<div class="edit-form-line">
+				<label>SerialState : </label>
+				<input type="text" ng-model="entity.serialState" />
+			</div>
+			<div class="edit-form-line">
+				<button ng-click="editDo()">保存</button>
+			</div>
+		</div>
+		<div class="shadow" ng-show="shadowShow"></div>
 	</div>
 
 </body>
