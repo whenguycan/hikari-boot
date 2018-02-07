@@ -53,6 +53,10 @@ public class BaseService<T extends BaseEntity> {
 		dao.delete(clazz, id);
 	}
 	
+	public void deleteByIds(String ids) {
+		dao.deleteByIds(clazz, ids);
+	}
+	
 	public List<T> findList(Map<String, String> params){
 		return dao.findList(Hql.build(clazz, params));
 	}

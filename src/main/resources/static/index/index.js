@@ -3,7 +3,7 @@ var app = angular.module('app', [], function($httpProvider) {
 });
 app.controller('appController', function($scope, $http) {
 	$scope.pageNo = 1;
-	$scope.pageSize = 24;
+	$scope.pageSize = 18;
 	$scope.head = 1;
 	$scope.tail = 1;
 	$scope.seasons;
@@ -146,6 +146,35 @@ app.controller('appController', function($scope, $http) {
 		$scope.entity = new Array();
 		$scope.shadowShow = true;
 		$scope.editShow = true;
+		$scope.seasonSelected = $scope.seasonsSelect[0];
+		$scope.serialSelected = $scope.serialsSelect[0];
+	}
+	$scope.checkedShow = false;
+	$scope.manage = function(){
+		$scope.checkedShow = !$scope.checkedShow;
+	}
+	$scope.checked = [];
+	$scope.isChecked = function(id){
+		return $scope.checked.indexOf(id) != -1;
+	}
+	$scope.updateChecked = function($event, id){
+		var checkbox = $event.target;
+		var checked = checkbox.checked;
+		if(checked == true){
+			$scope.checked.push(id);
+		}else{
+			var idx = $scope.checked.indexOf(id);
+			$scope.checked.splice(idx, 1);
+		}
+	}
+	$scope.delete0 = function(){
+		if(window.confirm("Are you sure to delete the selected ?")){
+			$http.post('anime/delete', 'ids=' + $scope.checked.join(',')).then(function(resp){
+				console.log(resp.data);
+				$scope.manage();
+				$scope.reload();
+			});
+		}
 	}
 	$scope.reload();
 });

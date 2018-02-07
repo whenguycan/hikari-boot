@@ -64,4 +64,10 @@ public class AnimeController extends BaseController{
 		return getSuccessResponse(null, true);
 	}
 	
+	@RequestMapping("/anime/delete")
+	public Object delete(HttpServletRequest req, HttpServletResponse resp, String ids) {
+		animeService.deleteByIds(ids);
+		return getSuccessResponse(null, true);
+	}
+	
 }

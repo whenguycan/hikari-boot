@@ -23,6 +23,8 @@
 				<input type="text" ng-model="searchText" ng-keyup="pressEnter($event)" />
 				<button ng-click="search()">GO!</button>
 				<button ng-click="reset0()">RESET!</button>
+				<button ng-click="manage()">MANAGE!</button>
+				<button ng-click="delete0()">DELETE!</button>
 			</div>
 			<div class="row">
 				<div class="col-xs-9">
@@ -31,7 +33,10 @@
 							<div class="row pic-panel-img">
 								<img alt="img" src="/upload/04.jpg" ng-click="edit(x.id)">
 							</div>
-							<div class="row pic-panel-num">{{x.curr}} / {{x.total}}</div>
+							<div class="row pic-panel-num">
+								<input type="checkbox" style="float: left; margin-left: 5px;" ng-show="checkedShow" ng-click="updateChecked($event, x.id)" ng-checked="isChecked(x.id)"/>
+								{{x.curr}} / {{x.total}}
+							</div>
 							<div class="row pic-panel-name">{{x.name}}</div>
 						</div>
 					</div>

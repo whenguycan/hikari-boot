@@ -5,11 +5,14 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.stereotype.Repository;
+
+import com.lepus.hikariboot.utils.StringUtils;
 
 /**
  * 
@@ -80,6 +83,30 @@ public class BaseDao extends HibernateDaoSupport{
 	public <T> void delete(Class<T> clazz, String id){
 		T t = getHibernateTemplate().get(clazz, id);
 		getHibernateTemplate().delete(t);
+	}
+	
+	public <T> void deleteByIds(Class<T> clazz, String ids) {
+		if(StringUtils.isBlank(ids))
+			return;
+		Session session = getSession();
+		Transaction tx = session.beginTransaction();
+		String hql = "delete from " + getAlias(clazz) + " where id in (" + joinIds(ids) + ")";
+		Query query = session.createQuery(hql);
+		query.executeUpdate();
+		tx.commit();
+		session.close();
+	}
+	private String getAlias(Class<?> clazz) {
+		int last = clazz.getName().lastIndexOf(".");
+		return clazz.getName().substring(last + 1);
+	}
+	private String joinIds(String ids) {
+		String in = "";
+		String[] arr = ids.split(",");
+		for(String id : arr) {
+			in += ",'" + id + "'";
+		}
+		return in.length() == 0 ? in : in.substring(1);
 	}
 	
 	public <T> List<T> findList(Hql hql){
