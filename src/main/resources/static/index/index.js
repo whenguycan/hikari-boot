@@ -8,6 +8,8 @@ app.controller('appController', function($scope, $http) {
 	$scope.tail = 1;
 	$scope.seasons;
 	$scope.serials;
+	$scope.seasonsSelect;
+	$scope.serialsSelect;
 	$scope.watches;
 	$scope.searchText = '';
 	$scope.search = function() {
@@ -27,12 +29,29 @@ app.controller('appController', function($scope, $http) {
 			$scope.go(1);
 		}
 	}
-	$http.post('anime/conditions', {}).then(function(resp) {
+	$http.post('anime/conditions').then(function(resp) {
 		var data = resp.data;
-		$scope.seasons = data.seasons;
-		$scope.serials = data.serials;
-		$scope.watches = data.watches;
+		var all = {};
+		all.code = '';
+		all.text = '全部';
+		$scope.seasons = new Array();
+		$scope.copy(data.seasons, $scope.seasons);
+		$scope.serials = new Array();
+		$scope.copy(data.serials, $scope.serials);
+		$scope.serials.unshift(all);
+		$scope.watches = new Array();
+		$scope.copy(data.watches, $scope.watches);
+		$scope.watches.unshift(all);
+		$scope.seasonsSelect = new Array();
+		$scope.copy(data.seasons, $scope.seasonsSelect);
+		$scope.serialsSelect = new Array();
+		$scope.copy(data.serials, $scope.serialsSelect);
 	});
+	$scope.copy = function(source, target){
+		for(var i in source){
+			target[i] = source[i];
+		}
+	}
 	$scope.params = new Array();
 	$scope.params['season'] = '';
 	$scope.params['sa_eq_i_serialState'] = '';
@@ -87,13 +106,14 @@ app.controller('appController', function($scope, $http) {
 	$scope.editShow = false;
 	$scope.entity = new Array();
 	$scope.edit = function(id){
-		$scope.entity['id'] = id;
 		var url = '/anime/detail/' + id;
-		$http.post(url, {}).then(function(resp){
+		$http.post(url).then(function(resp){
 			var data = resp.data;
-			for(var i in data){
-				$scope.entity[i] = data[i];
-			}
+			$scope.entity.id = data.id
+			$scope.entity.name = data.name;
+			$scope.entity.curr = data.curr;
+			$scope.entity.total = data.total;
+			$scope.entity.link = data.link;
 			$scope.seasons.forEach(function(i){
 				if(i.code == data['season']){
 					$scope.seasonSelected = i;
@@ -112,11 +132,20 @@ app.controller('appController', function($scope, $http) {
 		$scope.entity['season'] = $scope.seasonSelected == null ? '' : $scope.seasonSelected['code'];
 		$scope.entity['serialState'] = $scope.serialSelected == null ? '' : $scope.serialSelected['code'];
 		var url = 'anime/edit';
-		$http.post(url, {}).then(function(resp){
-			console.log(resp.data);
+		$http.post(url, $scope.resolveParams($scope.entity)).then(function(resp){
+			$scope.reload();
 		});
 		$scope.shadowShow = false;
 		$scope.editShow = false;
+	}
+	$scope.editCancel = function(){
+		$scope.shadowShow = false;
+		$scope.editShow = false;
+	}
+	$scope.add = function(){
+		$scope.entity = new Array();
+		$scope.shadowShow = true;
+		$scope.editShow = true;
 	}
 	$scope.reload();
 });

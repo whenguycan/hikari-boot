@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
 import com.lepus.hikariboot.app.acgn.bean.Anime;
 import com.lepus.hikariboot.app.acgn.service.AnimeService;
 import com.lepus.hikariboot.app.enums.Checker;
@@ -48,9 +47,6 @@ public class AnimeController extends BaseController{
 						@PathVariable(required = false)Integer pageNo,
 						@RequestParam(required = false)Integer pageSize){
 		Map<String, String> params = getInterceptoredParams(req);
-		for(String key : params.keySet()){
-			System.out.println(key + "=" + params.get(key));
-		}
 		params.put("s_order_desc_updateTime", "desc");
 		Page<Anime> page = new Page<Anime>(pageNo, pageSize);
 		return animeService.findPage(params, page);
@@ -64,8 +60,7 @@ public class AnimeController extends BaseController{
 	
 	@RequestMapping("/anime/edit")
 	public Object edit(HttpServletRequest req, HttpServletResponse resp, Anime anime){
-		System.out.println(anime.getId());
-		System.out.println(new Gson().toJson(anime));
+		animeService.saveOrUpdate(anime);
 		return getSuccessResponse(null, true);
 	}
 	

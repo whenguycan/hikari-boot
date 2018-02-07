@@ -19,6 +19,7 @@
 		</div>
 		<div class="col-xs-12">
 			<div class="row">
+				<button ng-click="add()">ADD!</button>
 				<input type="text" ng-model="searchText" ng-keyup="pressEnter($event)" />
 				<button ng-click="search()">GO!</button>
 				<button ng-click="reset0()">RESET!</button>
@@ -70,7 +71,7 @@
 			</div>
 			<div class="edit-form-line">
 				<label>Season : </label>
-				<select ng-model="seasonSelected" ng-options="x.text for x in seasons"></select>
+				<select ng-model="seasonSelected" ng-options="x.text for x in seasonsSelect"></select>
 			</div>
 			<div class="edit-form-line">
 				<label>Curr : </label>
@@ -86,10 +87,11 @@
 			</div>
 			<div class="edit-form-line">
 				<label>SerialState : </label>
-				<select ng-model="serialSelected" ng-options="x.text for x in serials"></select>
+				<select ng-model="serialSelected" ng-options="x.text for x in serialsSelect"></select>
 			</div>
 			<div class="edit-form-line">
 				<button ng-click="editDo()">保存</button>
+				<button ng-click="editCancel()">取消</button>
 			</div>
 		</div>
 		<div class="shadow" ng-show="shadowShow"></div>

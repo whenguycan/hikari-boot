@@ -3,6 +3,7 @@ package com.lepus.hikariboot.framework.build;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,18 +17,16 @@ import org.springframework.stereotype.Repository;
  * @date 2017-11-3
  */
 @Repository
+@Transactional
 public class BaseDao extends HibernateDaoSupport{
 
-	protected SessionFactory sessionFactory;
-	
 	@Resource
 	public void setMySessionFactory(SessionFactory sessionFactory){
-		this.sessionFactory = sessionFactory;
 		super.setSessionFactory(sessionFactory);
 	}
 	
 	private Session getSession() {
-		return sessionFactory.openSession();
+		return getHibernateTemplate().getSessionFactory().openSession();
 	}
 	
 	public <T> T fetch(Class<T> clazz, String id, boolean bornIfNull){
